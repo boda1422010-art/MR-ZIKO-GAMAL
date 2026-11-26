@@ -21,32 +21,36 @@ touch-action:pan-y;
 }
 .card{
 width:80%;
-height:80vh;
-height:80dvh;
 max-width:80%;
+/* بدل 80vh ثابت، خليته ياخد على قد المحتوى وميعديش 86% */
+height:auto;
+max-height:86vh;
+max-height:86dvh;
 background:rgba(20,12,4,0.85);
 border:1px solid rgba(245,197,24,0.35);
 border-radius:28px;
-padding:32px 22px 26px;
+padding:22px 20px 18px;
 text-align:center;
 display:flex;
 flex-direction:column;
 justify-content:center;
-gap:8px;
+gap:6px;
 margin:auto;
+overflow:hidden; /* ده اللي بيمنع اي حاجة تطلع برا */
 }
-.avatar{width:165px;height:165px;border-radius:50%;object-fit:cover;border:4px solid #e8d48a;margin:0 auto}
-h1{font-size:36px;color:#f5e6a8;line-height:1.1;margin-bottom:22px;margin-top:14px}
+.avatar{width:125px;height:125px;border-radius:50%;object-fit:cover;border:4px solid #e8d48a;margin:0 auto;flex-shrink:0}
+h1{font-size:32px;color:#f5e6a8;line-height:1.1;margin-bottom:12px;margin-top:10px;flex-shrink:0}
 a{
-display:flex;align-items:center;gap:16px;text-decoration:none;
+display:flex;align-items:center;gap:14px;text-decoration:none;
 background:rgba(255,255,255,0.08);
 border:1px solid #c9a227;
-padding:16px 16px;border-radius:22px;margin-bottom:10px;
+padding:13px 14px;border-radius:20px;margin-bottom:0;
 color:#fff;text-align:left;position:relative;z-index:2;
 will-change:transform,opacity;
+flex-shrink:0;
 }
-a b{font-size:20px;display:block}
-.icon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;color:#fff}
+a b{font-size:19px;display:block}
+.icon{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:23px;flex-shrink:0;color:#fff}
 .wa .icon{background:#25D366}
 .fb .icon{background:#1877F2}
 .ig .icon{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
@@ -75,12 +79,12 @@ body.sucking .card{animation:cardIn 0.55s ease-in forwards}
 }
 body.sucking h1, body.sucking .avatar{opacity:0}
 @media (min-width:768px){
-.card{max-width:80%;padding:48px 42px 36px;border-radius:34px}
-.avatar{width:225px;height:225px;border-width:5px}
-h1{font-size:58px;margin-bottom:34px;margin-top:18px}
-a{padding:24px 28px;border-radius:28px;margin-bottom:18px;gap:22px}
-a b{font-size:28px}
-.icon{width:74px;height:74px;font-size:36px}
+.card{max-width:80%;padding:32px 38px 28px;border-radius:34px}
+.avatar{width:180px;height:180px;border-width:5px}
+h1{font-size:52px;margin-bottom:20px;margin-top:14px}
+a{padding:18px 24px;border-radius:26px;gap:20px}
+a b{font-size:26px}
+.icon{width:64px;height:64px;font-size:32px}
 }
 </style>
 </head>
