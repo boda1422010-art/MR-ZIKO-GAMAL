@@ -7,11 +7,20 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+html{
+  overscroll-behavior-y:auto;
+  touch-action:pan-y;
+}
 body{
-min-height:100vh;background:#000;
+min-height:101vh;background:#000;
 background-size:cover;background-position:center;
-display:flex;justify-content:center;align-items:center;padding:20px 14px;
-color:#fff;overflow:hidden;
+display:flex;justify-content:center;align-items:flex-start;padding:20px 14px;
+padding-top:25px;padding-bottom:25px;
+color:#fff;
+overflow-y:auto;
+overscroll-behavior-y:auto;
+touch-action:pan-y;
+-webkit-overflow-scrolling:touch;
 }
 .card{
 width:100%;max-width:280px;
@@ -85,7 +94,6 @@ a b{font-size:26px}
 </div>
 
 <script>
-// --- الخلفيات - دول اللي انت بعت صورتهم ---
 const backgrounds = [
   'IMG-20261126-WA0189.jpg',
   'IMG-20261126-WA0190.jpg',
@@ -99,7 +107,6 @@ const backgrounds = [
   'IMG-20261126-WA0198.jpg',
   'IMG-20261126-WA0207.jpg'
 ];
-
 const randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
 const firstImg = new Image();
 firstImg.src = randomBg;
@@ -112,8 +119,6 @@ backgrounds.forEach(src => {
     img.src = src;
   }
 });
-
-// --- الصورة الشخصية - الباقي ---
 const pics = [
 "IMG-20261126-WA0200.jpg",
 "IMG-20261126-WA0201.jpg",
@@ -123,7 +128,6 @@ const pics = [
 "IMG-20261126-WA0208.jpg"
 ];
 document.getElementById("profilePic").src = pics[Math.floor(Math.random() * pics.length)];
-
 function resetAll(){
   document.querySelectorAll('.link-btn').forEach(b=>{
     b.classList.remove('sucked','chosen');
@@ -137,7 +141,6 @@ resetAll();
 window.addEventListener('pageshow', resetAll);
 window.addEventListener('focus', resetAll);
 document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) resetAll(); });
-
 document.querySelectorAll('.link-btn').forEach(btn => {
   btn.addEventListener('click', function(e){
     e.preventDefault();
