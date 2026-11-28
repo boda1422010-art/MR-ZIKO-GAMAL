@@ -60,26 +60,28 @@ a b{font-size:19px;display:block;text-shadow:0 1px 6px rgba(0,0,0,0.6)}
 .ig .icon{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
 .tk .icon{background:#000;border:1px solid #444}
 .ph .icon{background:#25D366}
-a.sucked{animation:suckAway 0.35s ease-out forwards !important}
+a.sucked{animation:suckAway 0.30s ease-out forwards !important}
 @keyframes suckAway{
   0%{transform:scale(1);opacity:1}
   100%{transform:scale(0);opacity:0}
 }
+/* الشفط اقوى هنا: بيكبر ل 45 بدل 30، بس بنفس السرعة الخفيفة */
 a.chosen{
-animation:chosenSuck 0.8s ease-in forwards !important;
+animation:chosenSuck 0.70s cubic-bezier(0.5,0,0.9,0.4) forwards !important;
 z-index:50;
 border-color:#f5c518;
 background:#000;
+will-change:transform;
 }
 @keyframes chosenSuck{
   0%{transform:scale(1)}
-  25%{transform:scale(1.3)}
-  100%{transform:scale(30);opacity:1;border-radius:50%}
+  18%{transform:scale(1.25)}
+  100%{transform:scale(45);opacity:1;border-radius:50%}
 }
-body.sucking .card{animation:cardIn 0.8s ease-in forwards !important}
+body.sucking .card{animation:cardIn 0.70s ease-in forwards !important}
 @keyframes cardIn{
   0%{transform:scale(1);opacity:1}
-  100%{transform:scale(0.1);opacity:0}
+  100%{transform:scale(0.05);opacity:0}
 }
 body.sucking h1, body.sucking .avatar{opacity:0}
 .lightbox{
@@ -151,25 +153,79 @@ const pics = [
 "img_1_1795706101740.jpg",
 "img_3_1795706121841.jpg"
 ];
-document.getElementById("profilePic").src = pics[Math.floor(Math.random() * pics.length)];
+
+// صورة شخصية: نحمل واحدة بس في الاول
+let picIndex = Math.floor(Math.random() * pics.length);
+let currentPic = pics[picIndex];
+const profilePicEl = document.getElementById("profilePic");
+profilePicEl.src = currentPic;
+
+// بعد ما الصورة الاولى تفتح، نحمل الباقي واحدة ورا واحدة
+let picPreloadStarted = false;
+function preloadRestPics(){
+  if(picPreloadStarted) return;
+  picPreloadStarted = true;
+  const restPics = pics.filter(p => p !== currentPic);
+  let j = 0;
+  function loadNextPic(){
+    if(j >= restPics.length) return;
+    const img = new Image();
+    img.onload = () => { j++; setTimeout(loadNextPic, 900); };
+    img.onerror = () => { j++; setTimeout(loadNextPic, 900); };
+    img.src = restPics[j];
+  }
+  setTimeout(loadNextPic, 2500);
+}
+profilePicEl.onload = preloadRestPics;
+profilePicEl.onerror = () => {
+  // لو الصورة اللي اخترناها مش فتحت، جرب اللي بعدها
+  picIndex = (picIndex + 1) % pics.length;
+  currentPic = pics[picIndex];
+  profilePicEl.src = currentPic;
+};
+// لو الصورة كانت جاهزة اصلا، شغل التحميل على طول
+if(profilePicEl.complete) preloadRestPics();
+
+// خلفية: نحمل واحدة بس في الاول
 let bgIndex = Math.floor(Math.random() * backgrounds.length);
+let currentBg = backgrounds[bgIndex];
 let tried = 0;
-function tryBg(){
+function loadFirstBg(){
   if(tried >= backgrounds.length) return;
   const bg = backgrounds[bgIndex];
   const test = new Image();
   test.onload = () => {
     document.body.style.backgroundImage = `url('${bg}')`;
+    currentBg = bg;
+    startPreloadRestBg();
   };
   test.onerror = () => {
     bgIndex = (bgIndex + 1) % backgrounds.length;
     tried++;
-    tryBg();
+    loadFirstBg();
   };
   test.src = bg;
   document.body.style.backgroundImage = `url('${bg}')`;
 }
-tryBg();
+loadFirstBg();
+
+// خلفيات الباقي: واحدة ورا واحدة
+let bgPreloadStarted = false;
+function startPreloadRestBg(){
+  if(bgPreloadStarted) return;
+  bgPreloadStarted = true;
+  const rest = backgrounds.filter(b => b !== currentBg);
+  let i = 0;
+  function loadNext(){
+    if(i >= rest.length) return;
+    const img = new Image();
+    img.onload = () => { i++; setTimeout(loadNext, 800); };
+    img.onerror = () => { i++; setTimeout(loadNext, 800); };
+    img.src = rest[i];
+  }
+  setTimeout(loadNext, 2000);
+}
+
 const profilePic = document.getElementById("profilePic");
 const lightbox = document.getElementById("lightbox");
 const bigPic = document.getElementById("bigPic");
@@ -213,7 +269,7 @@ document.querySelectorAll('.link-btn').forEach(btn => {
     btn.classList.add('chosen');
     document.body.classList.add('sucking');
     setTimeout(resetAll, 2500);
-    setTimeout(()=>{ window.location.href = targetUrl; }, 850);
+    setTimeout(()=>{ window.location.href = targetUrl; }, 750);
   });
 });
 </script>
