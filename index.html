@@ -156,11 +156,8 @@ const pics = [
 ];
 document.getElementById("profilePic").src = pics[Math.floor(Math.random() * pics.length)];
 const randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
-const firstImg = new Image();
-firstImg.src = randomBg;
-firstImg.onload = () => {
-  document.body.style.backgroundImage = `url('${randomBg}')`;
-};
+// الخلفية تظهر على طول من غير ما نستنى تحميلها
+document.body.style.backgroundImage = `url('${randomBg}')`;
 function preloadRest(){
   backgrounds.forEach(src => {
     if (src !== randomBg) {
