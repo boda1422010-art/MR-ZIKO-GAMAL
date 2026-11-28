@@ -129,40 +129,56 @@ a b{font-size:26px}
 </div>
 
 <script>
+// الخلفيات بالأسامي الجديدة اللي انت عملتها
 const backgrounds = [
-  'خلفيه 1.jpg',
-  'خلفيه 2.jpg',
-  'خلفيه 3.jpg',
-  'خلفيه 4.jpg',
-  'خلفيه 5.jpg',
-  'خلفيه 6.jpg',
-  'خلفيه 7.jpg',
-  'خلفيه 8.jpg',
-  'خلفيه 9.jpg',
-  'خلفيه 10.jpg'
+  '1.jpg',
+  '2.jpg',
+  '3.jpg',
+  '4.jpg',
+  '5.jpg',
+  '6.jpg',
+  '7.jpg',
+  '8.jpg',
+  '9.jpg',
+  '10.jpg'
 ];
+// صور الملف الشخصي الموجودة بس، من غير المحذوفة
 const pics = [
+"FB_IMG_1795706237442.jpg",
 "IMG-20261126-WA0200.jpg",
 "IMG-20261126-WA0201.jpg",
 "IMG-20261126-WA0203.jpg",
 "IMG-20261126-WA0205.jpg",
 "IMG-20261126-WA0206.jpg",
 "IMG-20261126-WA0208.jpg",
-"FB_IMG_1795706237442.jpg",
-"img_3_1795706121841.jpg",
-"img_5_1795706122265.jpg",
-"img_1_1795706101740.jpg"
+"img_1_1795706101740.jpg",
+"img_3_1795706121841.jpg"
 ];
-function fixName(name){ return encodeURI(name); }
 document.getElementById("profilePic").src = pics[Math.floor(Math.random() * pics.length)];
-const randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
-document.body.style.backgroundImage = `url('${fixName(randomBg)}')`;
+
+// لو خلفية مش فتحت، يجرب اللي بعدها على طول عشان متفضلش سودا
+let bgIndex = Math.floor(Math.random() * backgrounds.length);
+let tried = 0;
+function tryBg(){
+  if(tried >= backgrounds.length) return;
+  const bg = backgrounds[bgIndex];
+  const test = new Image();
+  test.src = bg;
+  test.onload = () => {
+    document.body.style.backgroundImage = `url('${bg}')`;
+  };
+  test.onerror = () => {
+    bgIndex = (bgIndex + 1) % backgrounds.length;
+    tried++;
+    tryBg();
+  };
+  document.body.style.backgroundImage = `url('${bg}')`;
+}
+tryBg();
 function preloadRest(){
   backgrounds.forEach(src => {
-    if (src !== randomBg) {
-      const img = new Image();
-      img.src = fixName(src);
-    }
+    const img = new Image();
+    img.src = src;
   });
 }
 if ('requestIdleCallback' in window) {
@@ -174,49 +190,4 @@ const profilePic = document.getElementById("profilePic");
 const lightbox = document.getElementById("lightbox");
 const bigPic = document.getElementById("bigPic");
 const closeBtn = document.getElementById("closeBtn");
-profilePic.addEventListener("click", function(){
-  bigPic.src = this.src;
-  lightbox.classList.add("open");
-});
-closeBtn.addEventListener("click", function(){
-  lightbox.classList.remove("open");
-});
-lightbox.addEventListener("click", function(e){
-  if(e.target !== bigPic){
-    lightbox.classList.remove("open");
-  }
-});
-function resetAll(){
-  document.querySelectorAll('.link-btn').forEach(b=>{
-    b.classList.remove('sucked','chosen');
-    b.style.animationDelay = '';
-    b.style.transform = '';
-    b.style.opacity = '';
-  });
-  document.body.classList.remove('sucking');
-}
-resetAll();
-window.addEventListener('pageshow', resetAll);
-window.addEventListener('focus', resetAll);
-document.addEventListener('visibilitychange', ()=>{ if(!document.hidden) resetAll(); });
-document.querySelectorAll('.link-btn').forEach(btn => {
-  btn.addEventListener('click', function(e){
-    e.preventDefault();
-    const targetUrl = this.href;
-    if(this.classList.contains('chosen')) return;
-    document.querySelectorAll('.link-btn').forEach((other, index) => {
-      if(other !== btn){
-        other.style.animationDelay = (index * 0.02) + 's';
-        other.classList.add('sucked');
-      }
-    });
-    btn.classList.add('chosen');
-    document.body.classList.add('sucking');
-    setTimeout(resetAll, 2000);
-    setTimeout(()=>{ window.location.href = targetUrl; }, 650);
-  });
-});
-</script>
-
-</body>
-</html>
+profile
