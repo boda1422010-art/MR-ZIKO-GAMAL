@@ -19,6 +19,8 @@ color:#fff;
 overscroll-behavior-y:auto;
 touch-action:pan-y;
 }
+/* اول ما يبدأ الشفط، الخلفية تبقى سودا على طول، عشان متظهرش لوحدها */
+body.sucking{background:#000 !important}
 .card{
 width:80%;
 max-width:80%;
@@ -60,14 +62,14 @@ a b{font-size:19px;display:block;text-shadow:0 1px 6px rgba(0,0,0,0.6)}
 .ig .icon{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)}
 .tk .icon{background:#000;border:1px solid #444}
 .ph .icon{background:#25D366}
-a.sucked{animation:suckAway 0.30s ease-out forwards !important}
+a.sucked{animation:suckAway 0.18s ease-out forwards !important}
 @keyframes suckAway{
   0%{transform:scale(1);opacity:1}
   100%{transform:scale(0);opacity:0}
 }
-/* الشفط اقوى هنا: بيكبر ل 45 بدل 30، بس بنفس السرعة الخفيفة */
+/* شفط اقوى واسرع: 0.45 ثانية بس */
 a.chosen{
-animation:chosenSuck 0.70s cubic-bezier(0.5,0,0.9,0.4) forwards !important;
+animation:chosenSuck 0.45s cubic-bezier(0.5,0,0.9,0.4) forwards !important;
 z-index:50;
 border-color:#f5c518;
 background:#000;
@@ -75,10 +77,10 @@ will-change:transform;
 }
 @keyframes chosenSuck{
   0%{transform:scale(1)}
-  18%{transform:scale(1.25)}
+  15%{transform:scale(1.25)}
   100%{transform:scale(45);opacity:1;border-radius:50%}
 }
-body.sucking .card{animation:cardIn 0.70s ease-in forwards !important}
+body.sucking .card{animation:cardIn 0.45s ease-in forwards !important}
 @keyframes cardIn{
   0%{transform:scale(1);opacity:1}
   100%{transform:scale(0.05);opacity:0}
@@ -178,12 +180,10 @@ function preloadRestPics(){
 }
 profilePicEl.onload = preloadRestPics;
 profilePicEl.onerror = () => {
-  // لو الصورة اللي اخترناها مش فتحت، جرب اللي بعدها
   picIndex = (picIndex + 1) % pics.length;
   currentPic = pics[picIndex];
   profilePicEl.src = currentPic;
 };
-// لو الصورة كانت جاهزة اصلا، شغل التحميل على طول
 if(profilePicEl.complete) preloadRestPics();
 
 // خلفية: نحمل واحدة بس في الاول
@@ -262,14 +262,15 @@ document.querySelectorAll('.link-btn').forEach(btn => {
     if(this.classList.contains('chosen')) return;
     document.querySelectorAll('.link-btn').forEach((other, index) => {
       if(other !== btn){
-        other.style.animationDelay = (index * 0.03) + 's';
+        other.style.animationDelay = (index * 0.02) + 's';
         other.classList.add('sucked');
       }
     });
     btn.classList.add('chosen');
     document.body.classList.add('sucking');
-    setTimeout(resetAll, 2500);
-    setTimeout(()=>{ window.location.href = targetUrl; }, 750);
+    setTimeout(resetAll, 2000);
+    // اسرع: يدخلك بعد 480 مللي ثانية بس، قبل ما الخلفية تظهر لوحدها
+    setTimeout(()=>{ window.location.href = targetUrl; }, 480);
   });
 });
 </script>
