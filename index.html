@@ -130,17 +130,16 @@ a b{font-size:26px}
 
 <script>
 const backgrounds = [
-  'IMG-20261126-WA0189.jpg',
-  'IMG-20261126-WA0190.jpg',
-  'IMG-20261126-WA0191.jpg',
-  'IMG-20261126-WA0192.jpg',
-  'IMG-20261126-WA0193.jpg',
-  'IMG-20261126-WA0194.jpg',
-  'IMG-20261126-WA0195.jpg',
-  'IMG-20261126-WA0196.jpg',
-  'IMG-20261126-WA0197.jpg',
-  'IMG-20261126-WA0198.jpg',
-  'IMG-20261126-WA0207.jpg'
+  'خلفيه 1.jpg',
+  'خلفيه 2.jpg',
+  'خلفيه 3.jpg',
+  'خلفيه 4.jpg',
+  'خلفيه 5.jpg',
+  'خلفيه 6.jpg',
+  'خلفيه 7.jpg',
+  'خلفيه 8.jpg',
+  'خلفيه 9.jpg',
+  'خلفيه 10.jpg'
 ];
 const pics = [
 "IMG-20261126-WA0200.jpg",
@@ -154,15 +153,15 @@ const pics = [
 "img_5_1795706122265.jpg",
 "img_1_1795706101740.jpg"
 ];
+function fixName(name){ return encodeURI(name); }
 document.getElementById("profilePic").src = pics[Math.floor(Math.random() * pics.length)];
 const randomBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
-// الخلفية تظهر على طول من غير ما نستنى تحميلها
-document.body.style.backgroundImage = `url('${randomBg}')`;
+document.body.style.backgroundImage = `url('${fixName(randomBg)}')`;
 function preloadRest(){
   backgrounds.forEach(src => {
     if (src !== randomBg) {
       const img = new Image();
-      img.src = src;
+      img.src = fixName(src);
     }
   });
 }
